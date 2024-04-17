@@ -16,7 +16,8 @@ class App:
         self.gravity = 0.05 # 重力
 
     def input_key(self):
-            if pyxel.btnp(pyxel.KEY_SPACE):
+            pressed = pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) #スマホのタップを検知する
+            if pressed:
                 # ジャンプする
                 self.vy = -2
 
