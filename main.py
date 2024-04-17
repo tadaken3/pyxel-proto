@@ -13,13 +13,15 @@ class App:
         self.x = 72
         self.y = self.GROUND_Y - 8
         self.vy = 0 # Y方向の速度
+        self.is_jumping = False
         self.gravity = 0.05 # 重力
 
     def input_key(self):
             pressed = pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.MOUSE_BUTTON_LEFT) #スマホのタップを検知する
-            if pressed:
+            if pressed and not self.is_jumping:
                 # ジャンプする
-                self.vy = -2
+                self.vy = -2.5
+                self.is_jumping = True # ジャンプ中
 
     def update(self):
         self.input_key()
@@ -31,6 +33,7 @@ class App:
         # ニャンコを地面に着地させる
         if self.y > self.GROUND_Y - 8:
             self.y = self.GROUND_Y - 8
+            self.is_jumping = False # 着地したらジャンプ中を解除
         
     def draw(self):
         pyxel.cls(0)
