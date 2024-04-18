@@ -1,7 +1,8 @@
 import pyxel
+import random
 
 class App:
-    GROUND_Y = 100
+    
 
     def __init__(self):
         pyxel.init(160, 120 , fps=60)
@@ -10,10 +11,23 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def init(self):
-        self.x = 72
-        self.y = self.GROUND_Y - 8
-        self.vy = 0 # Y方向の速度
+        # 地面の初期設定
+        self.floors = []
+        for i in range(10):
+            floor_x = i * 16
+            floor_y = random.randint(80, 100)
+            floor_width = random.randint(10, 20)
+            self.floors.append((floor_x, floor_y, floor_width))
+
+        # プレイヤーの初期位置
+        self.player_x = 20
+        self.player_y = self.floors[0][1] - 8  # プレイヤーの高さを考慮
+
         self.is_jumping = False
+        self.is_alive = True
+
+        self.vy = 0 # Y方向の速度
+
         self.gravity = 0.05 # 重力
 
     def input_key(self):
@@ -24,20 +38,42 @@ class App:
                 self.is_jumping = True # ジャンプ中
 
     def update(self):
-        self.input_key()
+        if self.is_alive:
+            self.input_key()
+            self.vy += self.gravity
+            self.player_y += self.vy
 
-        self.vy += self.gravity
-        # 速度を更新
-        self.y += self.vy
+            # 地面を左にスクロールさせる
+            for i in range(len(self.floors)):
+                self.floors[i] = (self.floors[i][0] - 1, self.floors[i][1], self.floors[i][2])
 
-        # ニャンコを地面に着地させる
-        if self.y > self.GROUND_Y - 8:
-            self.y = self.GROUND_Y - 8
-            self.is_jumping = False # 着地したらジャンプ中を解除
+            # プレイヤーが地面に接触しているかチェック
+            for floor_x, floor_y, floor_width in self.floors:
+                if floor_x <= self.player_x <= floor_x + floor_width and self.player_y >= floor_y:
+                    self.player_y = floor_y
+                    self.vy = 0
+                    self.is_jumping = False
+                    break
+
+            # プレイヤーが画面外に出たらゲームオーバー
+            if self.player_y > pyxel.height:
+                if self.is_alive:
+                    self.is_alive = False
+        else:
+            # ゲームオーバーの場合、任意のキーを押すとゲームをリセット
+            if self.input_key():
+                self.init()
+
         
     def draw(self):
         pyxel.cls(0)
-        pyxel.rect(0, self.GROUND_Y, pyxel.width, pyxel.height, 4)
-        pyxel.blt(self.x, self.y, 0, 0, 0, 8, 8, 5)
+
+        # 地面を描画
+        for floor_x, floor_y, floor_width in self.floors:
+            pyxel.rect(floor_x, floor_y, floor_width, pyxel.height - floor_y, 4)
+
+
+        #プレイヤーを描画
+        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, 5)
 
 App()
