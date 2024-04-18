@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/cw-kenta.tanaka/.local/share/virtualenvs/pyxel-lMxaI8ip/bin/python"
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true
 }

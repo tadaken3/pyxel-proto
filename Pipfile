@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 pyxel = "*"
+pylint = "*"
+flake8 = "*"
 
 [dev-packages]
 

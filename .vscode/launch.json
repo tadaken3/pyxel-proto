@@ -1,13 +1,14 @@
 {
     "version": "0.2.0",
     "configurations": [
-
-    {
-        "name":"Ptyon: Current File",
-        "type":"debugpy",
-        "request":"launch",
-        "program":"${file}",
-        "console":"integratedTerminal"
-    }
+        {
+            "name": "Python: Current File (Pipenv)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "pythonPath": "/Users/cw-kenta.tanaka/.local/share/virtualenvs/pyxel-lMxaI8ip/bin/python",
+            
+        }
     ]
 }
