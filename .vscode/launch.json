@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
-            "pythonPath": "/Users/cw-kenta.tanaka/.local/share/virtualenvs/pyxel-lMxaI8ip/bin/python",
+            "pythonPath": "pipenv run python",
             
         }
     ]
